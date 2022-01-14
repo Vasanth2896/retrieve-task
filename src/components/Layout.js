@@ -1,20 +1,23 @@
 import React from "react";
 import { Col, Container, Row, Stack, Table, Alert } from "react-bootstrap";
-import { dummyColumnHeaders, dummyData } from "../dummyData";
+// import { dummyColumnHeaders, dummyData } from "../dummyData";
 import FileUpload from "./FileUpload";
 import "../styles/columnListItem.css";
 
 const Layout = () => {
-  const [fileData, setFileData] = React.useState(dummyData);
-  const [columnHeaders, setColumnHeaders] = React.useState(dummyColumnHeaders);
+  const [fileData, setFileData] = React.useState();
+  const [columnHeaders, setColumnHeaders] = React.useState();
   const [selectedColumnHeaders, setSelectedColumnHeaders] = React.useState([]);
 
   const onDragOver = (e) => {
-    e.stopPropagation();
     e.preventDefault();
   };
 
   const onDragStart = (e, header) => {
+    const DragCondition = selectedColumnHeaders.includes(header);
+    if (DragCondition) {
+      return e.preventDefault();
+    }
     e.dataTransfer.setData("header", header);
   };
 
@@ -76,8 +79,8 @@ const Layout = () => {
               {columnHeaders?.map((header, index) => (
                 <div
                   className="columnListItem"
-                  draggable
                   onDragStart={(e) => onDragStart(e, header)}
+                  draggable={true}
                   key={index}
                 >
                   {header}
@@ -91,7 +94,7 @@ const Layout = () => {
             lg={10}
             xl={10}
             xxl={10}
-            className="droppable"
+            // className="droppable"
             onDragOver={(e) => onDragOver(e)}
             onDrop={(e) => onDrop(e)}
           >
@@ -106,9 +109,9 @@ const Layout = () => {
                       width="30"
                       height="30"
                       fill="currentColor"
-                      class="bi bi-info-circle"
+                      className="bi bi-info-circle"
                       viewBox="0 0 16 16"
-                      style={{marginRight:5}}
+                      style={{ marginRight: 5 }}
                     >
                       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                       <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
