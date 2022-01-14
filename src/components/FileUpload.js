@@ -4,7 +4,7 @@ import "../styles/fileUpload.css";
 import * as XLSX from "xlsx";
 
 const FileUpload = (props) => {
-  const { fileData, setFileData } = props;
+  const { setFileData,setColumnHeaders } = props;
   const hiddenFileInput = React.useRef(null);
 
   const handleDataImport = () => {
@@ -12,16 +12,15 @@ const FileUpload = (props) => {
   };
 
   const transformJson = (sheetData) => {
-    const transformedData = [];
     const sheetHeaders = sheetData[0];
-    const newSheetData = [...sheetData].slice(1);
-    for (let iterate = 0; iterate < newSheetData.length; iterate++) {
+    setColumnHeaders(sheetHeaders)
+    const transformedData = [...sheetData].slice(1).map((data) => {
       const orderItem = {};
-      for (let iterate2 = 0; iterate2 < sheetHeaders.length; iterate2++) {
-        orderItem[sheetHeaders[iterate2]] = newSheetData[iterate][iterate2];
+      for (let iterate = 0; iterate < sheetHeaders.length; iterate++) {
+        orderItem[sheetHeaders[iterate]] = data[iterate];
       }
-      transformedData.push(orderItem);
-    }
+      return orderItem;
+    });
     return transformedData;
   };
 
@@ -40,22 +39,24 @@ const FileUpload = (props) => {
     reader.readAsBinaryString(uploadedFile);
   };
 
+  // need to check whether File upload should be allowed again
+
   return (
     <>
-      {!fileData && (
-        <div className="fileUploadContainer">
-          <p style={{ fontSize: 18 }}>Please upload a spreadsheet file</p>
-          <Button className="fileUploadBtn" onClick={handleDataImport}>
-            Upload
-          </Button>
-          <input
-            type="file"
-            ref={hiddenFileInput}
-            onChange={handleChange}
-            style={{ display: "none" }}
-          />
-        </div>
-      )}
+      <div className="fileUploadContainer">
+        <p style={{ fontSize: 18, marginBottom: "unset" }}>
+          Please upload a spreadsheet file
+        </p>
+        <Button className="fileUploadBtn" onClick={handleDataImport}>
+          Upload
+        </Button>
+        <input
+          type="file"
+          ref={hiddenFileInput}
+          onChange={handleChange}
+          style={{ display: "none" }}
+        />
+      </div>
     </>
   );
 };
