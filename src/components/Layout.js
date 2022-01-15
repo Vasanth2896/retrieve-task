@@ -63,13 +63,13 @@ const Layout = () => {
       )}
       {fileData && (
         <>
-        <h3 className="mt-3" style={{color:'#34568b'}}>Dashboard:</h3>
+          <h3 className="mt-3" style={{ color: "#34568b" }}>
+            Dashboard:
+          </h3>
           <Row
             className="mt-3"
             style={{
               border: "2px solid #34568b",
-              marginLeft: "unset",
-              marginRight: "unset",
             }}
           >
             <Col
